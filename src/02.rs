@@ -1,15 +1,16 @@
 use std::collections;
 use std::fs;
 
-fn valid_round(cubes: &Vec<&str>) -> bool {
+fn valid_round(round: &str) -> bool {
     let color_map = collections::HashMap::<&str, u32>::from([
         ("red", 12),
         ("green", 13),
         ("blue", 14),
     ]);
     let small_max = color_map.values().min().unwrap();
+    let cubes: Vec<&str> = round.split(",").map(|c| c.trim()).collect();
 
-    for cube in cubes {
+    for cube in &cubes {
         let (count, color) = match cube.split_once(" ") {
             Some((count, color)) => {
                 let cnt = count
@@ -29,13 +30,11 @@ fn valid_round(cubes: &Vec<&str>) -> bool {
     true
 }
 
-fn valid_game(raw_rounds: &str) -> bool {
-    let rounds: Vec<&str> = raw_rounds.split(";").map(|r| r.trim()).collect();
+fn valid_game(game: &str) -> bool {
+    let rounds: Vec<&str> = game.split(";").map(|r| r.trim()).collect();
 
     for round in &rounds {
-        let cubes: Vec<&str> = round.split(",").map(|c| c.trim()).collect();
-
-        if !valid_round(&cubes) {
+        if !valid_round(&round) {
             return false;
         }
     }
