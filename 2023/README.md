@@ -1,6 +1,6 @@
 # Advent of Code 2023
 
-This year, I will be solving the puzzles using Python.
+This year, I will be solving the puzzles using Rust.
 
 ## Solutions
 
