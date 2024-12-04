@@ -35,7 +35,7 @@ Now, to run any of the solutions, do:
 cargo run --bin 01
 ```
 
-If you are solving puzzles, you can also use `launcher.py` to set up your daily
+If you are solving puzzles, you can also use `scaffold.sh` to set up your daily
 challenges as well.
 
 ```bash
