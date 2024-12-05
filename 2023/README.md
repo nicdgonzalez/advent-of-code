@@ -21,8 +21,8 @@ Assuming the following:
 └── README.md
 ```
 
-`cargo` expects your terminal to be inside of the "2023" directory too,
-so change directory like so:
+`cargo` expects your terminal to be inside of the "2023" directory too, so
+change directory like so:
 
 ```bash
 cd ./2023

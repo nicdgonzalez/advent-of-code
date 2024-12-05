@@ -17,8 +17,8 @@ Assuming the following:
 └── README.md
 ```
 
-The launcher expects your terminal to be inside of the "2024" directory too,
-so change directory like so:
+The launcher expects your terminal to be inside of the "2024" directory too, so
+change directory like so:
 
 ```bash
 cd ./2024

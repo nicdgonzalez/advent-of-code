@@ -1,0 +1,37 @@
+"""
+Solution for Advent of Code 2024, day 2.
+https://adventofcode.com/2024/day/2
+
+Attempted on: 2024-12-04
+"""
+
+import pathlib
+
+
+def part_one(data: str) -> int:
+    """A brief description about part one.
+
+    Returns
+    -------
+    int:
+        <A brief description about what you are returning>
+    """
+    raise NotImplementedError
+
+
+def part_two(data: str) -> int:
+    """A brief description about part two.
+
+    Returns
+    -------
+    int:
+        <A brief description about what you are returning>
+    """
+    raise NotImplementedError
+
+
+if __name__ == "__main__":
+    current_dir = pathlib.Path(__file__).resolve().parent
+    data = current_dir.joinpath("input.txt").read_text()
+    print("part one:", part_one(data=data))
+    print("part two:", part_two(data=data))
