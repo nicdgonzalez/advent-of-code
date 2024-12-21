@@ -46,7 +46,7 @@ main() {
 
     mkdir "$PWD/src/bin/$DAY"
     echo "$TEMPLATE" > "$PWD/src/bin/$DAY/main.rs"
-    aoc download --year 2023 --day "$DAY" --input-file "./src/bin/$DAY/input.txt"
+    aoc download --year 2023 --day "$DAY" --input-only --input-file "./src/bin/$DAY/input.txt"
 }
 
 main "$@"
