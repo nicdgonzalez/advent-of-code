@@ -3,13 +3,13 @@
 //!
 //! Attempted on 2024-12-21
 
-use std::{fs, path};
+use std::{cmp::Ordering, fs, path};
 
 #[must_use]
 fn part_one(input: &str) -> i32 {
     input
         .lines()
-        .map(|line| {
+        .filter(|line| {
             let numbers: Vec<i32> = line
                 .split_whitespace()
                 .map(|n| n.parse().unwrap())
@@ -25,14 +25,70 @@ fn part_one(input: &str) -> i32 {
                 let distance = (a - b).abs();
 
                 ((a < b) == increasing) && (distance > 0 && distance < 4)
-            }) as i32
+            })
         })
-        .sum()
+        .count()
+        .try_into()
+        .unwrap()
 }
 
 #[must_use]
-fn part_two(_input: &str) -> i32 {
-    todo!()
+fn part_two(input: &str) -> i32 {
+    input
+        .lines()
+        .filter(|line| {
+            let numbers: Vec<i32> = line
+                .split_whitespace()
+                .map(|n| n.parse().unwrap())
+                .collect();
+
+            debug_assert!(numbers.len() > 1);
+            let ascending = match numbers[0].cmp(&numbers[1]) {
+                Ordering::Less => true,
+                // If the first two values are equal, in order for the report
+                // to be "safe" then all other levels need to be valid. We can
+                // discard the first value, then treat this report like
+                // part one where it is marked unsafe after the first fail.
+                Ordering::Equal => {
+                    let ascending = numbers[1] < numbers[2];
+                    let remainder = &numbers[1..];
+
+                    return remainder.windows(2).all(|pair| {
+                        let (a, b) = (pair[0], pair[1]);
+                        let distance = (a - b).abs();
+
+                        ((a < b) == ascending) && (1..=3).contains(&distance)
+                    });
+                }
+                Ordering::Greater => false,
+            };
+
+            let distances: Vec<i32> = numbers.windows(2).map(|pair| pair[0] - pair[1]).collect();
+            let mut tolerance = 1;
+            let mut i = 0;
+
+            while i < distances.len() {
+                let a = distances[i];
+
+                if ((a < 0) == ascending) && (1..=3).contains(&a.abs()) {
+                    i += 1;
+                    continue;
+                }
+
+                if tolerance > 0 {
+                    tolerance -= 1;
+                    i += 1;
+                    continue;
+                }
+
+                return false;
+            }
+
+            true
+        })
+        .count()
+        .try_into()
+        .unwrap()
 }
 
 fn main() {
@@ -45,15 +101,4 @@ fn main() {
 
     println!("part one: {}", part_one(&input));
     println!("part two: {}", part_two(&input));
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_part_one() {}
-
-    #[test]
-    fn test_part_two() {}
 }
