@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 
-TEMPLATE="\
+main() {
+    declare DAY="$1"
+
+    local TEMPLATE="\
 //! Solution for Advent of Code 2023, day $DAY.
 //! https://adventofcode.com/2024/day/$DAY
 //!
@@ -29,9 +32,6 @@ fn main() {
     println!(\"part two: {}\", part_two(&input));
 }"
 
-main() {
-    declare DAY="$1"
-
     if [[ ! $DAY ]]; then
         echo >&2 "usage: $(basename -- "$0") <DAY>"
         echo >&2 "<DAY> is a number between 1 and 25 (inclusive)"
@@ -46,7 +46,7 @@ main() {
 
     mkdir "$PWD/src/bin/$DAY"
     echo "$TEMPLATE" > "$PWD/src/bin/$DAY/main.rs"
-    aoc download --year 2023 --day "$DAY" --input-file "./src/bin/$DAY/input.txt"
+    aoc download --year 2023 --day "$DAY" --input-only --input-file "./src/bin/$DAY/input.txt"
 }
 
 main "$@"
