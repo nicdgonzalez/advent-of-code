@@ -5,6 +5,14 @@
 
 use std::{cmp::Ordering, fs, path};
 
+/// Each line of data looks something like this:
+///
+///     7 6 4 2 1
+///
+/// Each line of input is a report, and each number in a report is a level.
+/// Return the number of reports where every level is either all increasing
+/// or all decreasing, and the distance between each level is at least one,
+/// but not greater than three.
 #[must_use]
 fn part_one(input: &str) -> i32 {
     input
@@ -32,6 +40,8 @@ fn part_one(input: &str) -> i32 {
         .unwrap()
 }
 
+/// Same as part one, except you are allowed to discard a single bad level
+/// if removing that level would have made the rest of the report valid.
 #[must_use]
 fn part_two(input: &str) -> i32 {
     input
@@ -44,7 +54,6 @@ fn part_two(input: &str) -> i32 {
 
             debug_assert!(numbers.len() > 1);
             let ascending = match numbers[0].cmp(&numbers[1]) {
-                Ordering::Less => true,
                 // If the first two values are equal, in order for the report
                 // to be "safe" then all other levels need to be valid. We can
                 // discard the first value, then treat this report like
@@ -61,30 +70,24 @@ fn part_two(input: &str) -> i32 {
                     });
                 }
                 Ordering::Greater => false,
+                Ordering::Less => true,
             };
 
-            let distances: Vec<i32> = numbers.windows(2).map(|pair| pair[0] - pair[1]).collect();
-            let mut tolerance = 1;
-            let mut i = 0;
+            #[rustfmt::skip]
+            let distances: Vec<i32> = numbers
+                .windows(2)
+                .map(|pair| pair[0] - pair[1])
+                .collect();
 
-            while i < distances.len() {
-                let a = distances[i];
+            let valid_distance = |distance: &&i32| {
+                ((**distance < 0) == ascending) && (1..=3).contains(&distance.abs())
+            };
 
-                if ((a < 0) == ascending) && (1..=3).contains(&a.abs()) {
-                    i += 1;
-                    continue;
-                }
+            let mut iter = distances.iter();
+            // Discard only the first invalid value.
+            let _ = iter.by_ref().skip_while(valid_distance).next();
 
-                if tolerance > 0 {
-                    tolerance -= 1;
-                    i += 1;
-                    continue;
-                }
-
-                return false;
-            }
-
-            true
+            iter.all(|distance| valid_distance(&distance))
         })
         .count()
         .try_into()
