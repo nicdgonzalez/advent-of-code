@@ -46,6 +46,7 @@ fn part_one(input: &str) -> i32 {
                     .collect::<String>()
                     .parse()
                     .unwrap();
+
                 total += part_number;
             }
         }
@@ -56,7 +57,7 @@ fn part_one(input: &str) -> i32 {
 
 /// A brief description about part two.
 #[must_use]
-fn part_two(input: &str) -> i32 {
+fn part_two(_input: &str) -> i32 {
     todo!()
 }
 
