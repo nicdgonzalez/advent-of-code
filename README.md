@@ -31,7 +31,7 @@ will include specific instructions on how to run the code.
 | Year | Language | Completed up to |
 | :-: | :- | :- |
 | 2023 | Rust | Day 2 (2/2) |
-| 2024 | Python | Day 1 (2/2) |
+| 2024 | Python | Day 2 (2/2) |
 
 ## Good luck and happy coding!
 
