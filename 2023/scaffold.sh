@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 
-TEMPLATE="\
+main() {
+    declare DAY="$1"
+
+    local TEMPLATE="\
 //! Solution for Advent of Code 2023, day $DAY.
 //! https://adventofcode.com/2024/day/$DAY
 //!
@@ -28,9 +31,6 @@ fn main() {
     println!(\"part one: {}\", part_one(&input));
     println!(\"part two: {}\", part_two(&input));
 }"
-
-main() {
-    declare DAY="$1"
 
     if [[ ! $DAY ]]; then
         echo >&2 "usage: $(basename -- "$0") <DAY>"
