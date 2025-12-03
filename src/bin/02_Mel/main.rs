@@ -25,9 +25,9 @@ fn part_two(input: &str) -> i64 {
             .trim()
             .split_once("-")
             .map(|(start, stop)| {
-                println!("{start}");
+                // println!("{start}");
                 let start = start.parse::<i64>().unwrap();
-                println!("{stop}");
+                // println!("{stop}");
                 let stop: i64 = stop.parse().unwrap();
 
                 (start, stop)
@@ -50,7 +50,8 @@ fn part_two(input: &str) -> i64 {
                     let nums: HashSet<_> = nums.into_iter().collect();
 
                     if nums.len() == 1 {
-                        println!("Found {n} to have {nums:?} symmetry");
+                        // println!("Found {n} to have {nums:?} symmetry");
+                        // println!("{n}");
                         total += n;
                         break;
                     }
@@ -59,7 +60,7 @@ fn part_two(input: &str) -> i64 {
         }
     }
 
-    println!("{total}");
+    // println!("{total}");
     total
 }
 
