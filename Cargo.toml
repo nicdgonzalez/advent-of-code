@@ -2,6 +2,5 @@
 name = "advent-of-code"
 version = "0.1.0"
 edition = "2024"
-default-run = "01"
 
 [dependencies]
