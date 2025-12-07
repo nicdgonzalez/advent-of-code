@@ -57,7 +57,76 @@ fn part_one(input: &str) -> u64 {
 
 #[must_use]
 fn part_two(input: &str) -> u64 {
-    0
+    let mut entries = input.lines().collect::<Vec<_>>();
+    let last = entries
+        .pop()
+        .expect("expected non-empty entries")
+        .as_bytes();
+    let operators = last
+        .split(u8::is_ascii_whitespace)
+        .flat_map(ToOwned::to_owned)
+        .collect::<Vec<_>>();
+
+    // All of the operators are left aligned, so we can use that to find the length of each column.
+    let mut column_widths = Vec::<usize>::with_capacity(operators.len());
+
+    let mut column_width = 1;
+    for &c in last.iter().skip(1) {
+        if c == b' ' {
+            column_width += 1;
+        } else {
+            column_widths.push(column_width - 1); // Subtract the single space separator.
+            column_width = 1; // Reset counter to prepare for counting the next column.
+        }
+    }
+    // The last column was never flushed since it didn't hit another operator; flush manually.
+    column_widths.push(column_width);
+    assert_eq!(column_widths.len(), operators.len());
+    dbg!(&column_widths);
+
+    let mut total = 0u64;
+    let mut offset = 0;
+
+    for (i, width) in column_widths.into_iter().enumerate() {
+        dbg!(width);
+        let operator = operators[i];
+        let mut result = 0u64;
+        if matches!(operator, b'*') {
+            // Anything multiplied by zero is always zero; start from one instead.
+            result += 1;
+        }
+
+        for j in (0..width).rev() {
+            let mut value = 0u64;
+
+            for row in entries.iter().map(|row| row.as_bytes()) {
+                dbg!(offset, j);
+                let b = row[offset + j];
+
+                if b == b' ' {
+                    continue;
+                }
+
+                let d = b - b'0';
+                dbg!(d);
+
+                value *= 10;
+                value += u64::from(d);
+            }
+            dbg!(value);
+
+            match operator {
+                b'+' => result += value,
+                b'*' => result *= value,
+                _ => unreachable!(),
+            }
+        }
+
+        offset += width + 1;
+        total += result;
+    }
+
+    total
 }
 
 #[cfg(test)]
