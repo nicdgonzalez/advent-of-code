@@ -66,7 +66,39 @@ fn part_one(input: &str) -> u64 {
 
 #[must_use]
 fn part_two(input: &str) -> u64 {
-    0
+    let mut lines = input.lines();
+
+    let start = lines
+        .next()
+        .expect("expected input to be non-empty")
+        .find('S')
+        .expect("expected start to be marked with an 'S'");
+
+    let diagram = lines
+        .filter(|line| line.contains('^'))
+        .map(|line| line.as_bytes())
+        .collect::<Vec<_>>();
+
+    let mut paths = vec![0u64; diagram[0].len()];
+    paths[start] = 1;
+
+    for &row in &diagram {
+        let mut i = 0;
+        while i < paths.len() {
+            let path = paths[i];
+
+            if row[i] == b'^' {
+                paths[i - 1] += path;
+                paths[i + 1] += path;
+                paths[i] = 0;
+            }
+
+            i += 1;
+        }
+    }
+
+    dbg!(&paths);
+    paths.iter().sum()
 }
 
 #[cfg(test)]
@@ -97,6 +129,6 @@ mod tests {
 
     #[test]
     fn part_two_example() {
-        assert_eq!(part_two(EXAMPLE_INPUT), 0);
+        assert_eq!(part_two(EXAMPLE_INPUT), 40);
     }
 }
